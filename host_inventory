@@ -1,4 +1,3 @@
 webservers:
     hosts:
-        web01:
-            ansbible_host: 44.199.233.7
+        ansible_host: 44.199.233.7
