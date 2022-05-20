@@ -1,5 +1,5 @@
 ---
-- name: Install and Configure Apache 
+- name: Install and Configure Apache
   hosts: webservers
   become: yes
   become_user: root
