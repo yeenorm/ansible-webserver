@@ -29,7 +29,7 @@ pipeline {
                 git branch: 'main', credentialsId: 'repo-key', url: 'git@github.com:yeenorm/ansible-webserver.git'
             }
         }
-        stage('Run ansible-lint against playbooks') {
+        stage('Run Ansible-lint against playbooks') {
             steps {
                 sh 'docker run --rm -v $WORKSPACE/playbooks:/data cytopia/ansible-lint:4 apache-install.yml'
                 sh 'docker run --rm -v $WORKSPACE/playbooks:/data cytopia/ansible-lint:4 website-update.yml'
@@ -49,8 +49,8 @@ pipeline {
         stage('Install apache & and update website') {
             steps {
                 sh 'export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/apache-install.yml'
-                sh 'export ANSIBLE_ROLES_PATH=/opt/jenkins/workspace/ansible-pipeline/roles && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/website-update.yml'
-            }
+				sh 'export ANSIBLE_ROLES_PATH=/opt/jenkins/workspace/ansible-pipeline/roles && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/website-update.yml'
+			}
         }
         stage('Test Website') {
             steps {
