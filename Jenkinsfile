@@ -1,5 +1,9 @@
 pipeline {
     agent { label "agentfarm" }
+    environment {
+        KEY_FILE = 'home/ubuntu/.ssh/technotrainer-18may22.pem'
+        USER = 'ubuntu'
+    }
     stages {
         stage('Delete the workspace') {
             steps {
@@ -40,6 +44,17 @@ pipeline {
         stage('Request input') {
             steps {
                 input 'Please approve or deny this build'
+            }
+        }
+        stage('Install apache & and update website') {
+            steps {
+                sh 'export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/apache-install.yml'
+                sh 'export ANSIBLE_ROLES_PATH=/opt/jenkins/workspace/ansible-pipeline/roles && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/website-update.yml'
+            }
+        }
+        stage('Test Website') {
+            steps {
+                sh 'export ANSIBLE_ROLES_PATH=/opt/jenkins/workspace/ansible-pipeline/roles && ansible-playbook -u $USER --private-key $KEY_FILE -i $WORKSPACE/host_inventory $WORKSPACE/playbooks/website-test.yml'
             }
         }
     }
