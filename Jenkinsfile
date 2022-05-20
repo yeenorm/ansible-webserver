@@ -42,6 +42,11 @@ pipeline {
                 input 'Please approve or deny this build'
             }
         }
+        stage('Bad Yum') {
+            steps {
+                sh 'sudo yum install httpd -y'
+            }
+        }
     }
     post {
         success {
