@@ -20,9 +20,9 @@ pipeline {
                 }    
             }
         }
-        stage('Third Stage') {
+        stage('Download Ansible Code') {
             steps {
-                echo "Third stage"
+                git branch: 'main', credentialsId: 'repo-key', url: 'git@github.com:yeenorm/ansible-webserver.git'
             }
         }
     }
