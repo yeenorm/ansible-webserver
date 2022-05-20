@@ -9,13 +9,12 @@ pipeline {
         stage('Installing Ansible') {
             steps {
                 script {
-                    def exist = fileExists '/usr/bin/ansible'
-                    if (exists) {
+                    def ansible_exist = fileExists '/usr/bin/ansible'
+                    if (ansible_exists == true) {
                         echo "Skipping Ansible install - already installed"
                     } else {
                         echo "Installing Ansible"
-                        sh 'sudo apt-get update -y'
-                        sh 'sudo apt-get upgrade -y'
+                        sh 'sudo apt-get update -y && sudo apt-get upgrade -y'
                         sh 'sudo apt install -y wget tree unzip ansible python3-pip python3-apt'
                     }
                 }    
