@@ -24,6 +24,7 @@ pipeline {
             steps {
                 git branch: 'main', credentialsId: 'repo-key', url: 'git@github.com:yeenorm/ansible-webserver.git'
             }
+        }
         stage('Run ansible-lint against playbooks') {
             steps {
                 sh 'docker run --rm -v $WORKSPACE/playbooks:/data cytopia/ansible-lint:4 apache-install.yml'
